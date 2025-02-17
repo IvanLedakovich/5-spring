@@ -1,4 +1,4 @@
-package com.ivanledakovich.__spring;
+package com.ivanledakovich;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
