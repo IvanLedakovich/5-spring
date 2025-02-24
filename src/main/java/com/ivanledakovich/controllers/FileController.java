@@ -63,8 +63,11 @@ public class FileController {
             String data = FileReader.readFile(txtFile.getAbsolutePath());
             BufferedImage image = ImageCreator.createImage(data);
 
-
-            File imageFile = new File(saveLocation, uniqueImageFileName);
+            File imageDir = new File(saveLocation);
+            if (!imageDir.exists()) {
+                imageDir.mkdirs();
+            }
+            File imageFile = new File(imageDir, uniqueImageFileName);
             ImageIO.write(image, imageExtension, imageFile);
 
             fileService.insertAFile(txtFile, imageFile);

@@ -1,7 +1,8 @@
 package com.ivanledakovich;
 
 import com.ivanledakovich.logic.ArgumentsParser;
-import com.ivanledakovich.logic.FileProcessor;
+import com.ivanledakovich.logic.FileReader;
+import com.ivanledakovich.logic.ImageCreator;
 import com.ivanledakovich.models.Parameters;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,36 +11,65 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.boot.WebApplicationType;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-	private final FileProcessor fileProcessor;
-
-	public Application(FileProcessor fileProcessor) {
-		this.fileProcessor = fileProcessor;
-	}
-
 	public static void main(String[] args) {
 		if (args.length > 0) {
-			ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class)
-					.web(WebApplicationType.NONE)
-					.run(args);
-			context.close();
+			// CLI mode: Disable Spring context entirely
+			Parameters params = ArgumentsParser.parseArguments(args);
+			for (String path : params.getTextFilePaths()) {
+				try {
+					processFileDirectly(
+							path,
+							params.getImageFileType(),
+							params.getImageSaveLocation()
+					);
+				} catch (IOException e) {
+					System.err.println("Failed to process file: " + path);
+					e.printStackTrace();
+				}
+			}
 		} else {
+			// Web mode: Start Spring context
 			SpringApplication.run(Application.class, args);
 		}
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
-		if (args.length > 0) {
-			Parameters params = ArgumentsParser.parseArguments(args);
-			for (String path : params.getTextFilePaths()) {
-				fileProcessor.configure(params.getImageFileType(),
-						params.getImageSaveLocation(),
-						path);
-				fileProcessor.call();
-			}
+	public void run(String... args) {
+		// Empty for web mode (handled by controllers)
+	}
+
+	private static void processFileDirectly(
+			String textFilePath,
+			String imageType,
+			String saveLocation
+	) throws IOException {
+		File originalTxtFile = new File(textFilePath);
+
+		// 1. Read text file
+		String data = FileReader.readFile(originalTxtFile.getAbsolutePath());
+
+		// 2. Generate image
+		BufferedImage image = ImageCreator.createImage(data);
+
+		// 3. Ensure save directory exists
+		File saveDir = new File(saveLocation);
+		if (!saveDir.exists()) {
+			saveDir.mkdirs();
 		}
+
+		// 4. Save image directly (no database/filesystem storage)
+		String imageName = originalTxtFile.getName() + "." + imageType;
+		File imageFile = new File(saveDir, imageName);
+		ImageIO.write(image, imageType, imageFile);
+
+		System.out.println("Saved image to: " + imageFile.getAbsolutePath());
 	}
 }

@@ -38,3 +38,4 @@ out/
 
 ### Other ###
 /src/main/resources/application.properties
+/logs/application.log

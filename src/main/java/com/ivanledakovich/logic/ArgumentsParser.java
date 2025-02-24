@@ -37,7 +37,7 @@ public class ArgumentsParser {
             }
         }
 
-        if(parameters.getImageFileType() == null || parameters.getImageSaveLocation() == null || parameters.getTextFilePaths() == null){
+        if(parameters.getImageFileType() == null || parameters.getImageSaveLocation() == null || parameters.getTextFilePaths().isEmpty()){
             Help.help();
             throw new IllegalArgumentException();
         }
