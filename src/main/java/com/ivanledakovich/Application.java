@@ -7,9 +7,6 @@ import com.ivanledakovich.models.Parameters;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.boot.WebApplicationType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,7 +18,6 @@ public class Application implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
-			// CLI mode: Disable Spring context entirely
 			Parameters params = ArgumentsParser.parseArguments(args);
 			for (String path : params.getTextFilePaths()) {
 				try {
@@ -36,14 +32,12 @@ public class Application implements CommandLineRunner {
 				}
 			}
 		} else {
-			// Web mode: Start Spring context
 			SpringApplication.run(Application.class, args);
 		}
 	}
 
 	@Override
 	public void run(String... args) {
-		// Empty for web mode (handled by controllers)
 	}
 
 	private static void processFileDirectly(
@@ -53,19 +47,15 @@ public class Application implements CommandLineRunner {
 	) throws IOException {
 		File originalTxtFile = new File(textFilePath);
 
-		// 1. Read text file
 		String data = FileReader.readFile(originalTxtFile.getAbsolutePath());
 
-		// 2. Generate image
 		BufferedImage image = ImageCreator.createImage(data);
 
-		// 3. Ensure save directory exists
 		File saveDir = new File(saveLocation);
 		if (!saveDir.exists()) {
 			saveDir.mkdirs();
 		}
 
-		// 4. Save image directly (no database/filesystem storage)
 		String imageName = originalTxtFile.getName() + "." + imageType;
 		File imageFile = new File(saveDir, imageName);
 		ImageIO.write(image, imageType, imageFile);
