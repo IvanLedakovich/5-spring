@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.concurrent.Callable;
+import java.io.IOException;
 
 @Component
-public class FileProcessor implements Callable<Integer> {
+public class FileProcessor implements Runnable {
 
     private final FileService fileService;
     private String imageFileType;
@@ -27,16 +27,23 @@ public class FileProcessor implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() throws Exception {
+    public void run() {
         File txtFile = new File(textFilePath);
         String imageName = txtFile.getName() + "." + imageFileType;
         File imageFile = new File(imageSaveLocation, imageName);
         String data = FileReader.readFile(textFilePath);
         BufferedImage image = ImageCreator.createImage(data);
-        ImageIO.write(image, imageFileType, imageFile);
-        fileService.insertAFile(txtFile, imageFile);
+        try {
+            ImageIO.write(image, imageFileType, imageFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            fileService.insertAFile(txtFile, imageFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         txtFile.deleteOnExit();
         imageFile.deleteOnExit();
-        return 0;
     }
 }
