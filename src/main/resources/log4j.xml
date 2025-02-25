@@ -17,13 +17,14 @@
         </layout>
     </appender>
 
+    <logger name="com.ivanledakovich">
+        <level value="debug"/>
+    </logger>
+
     <root>
         <priority value="info"/>
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="com.ivanledakovich">
-        <level value="debug"/>
-    </logger>
 </log4j:configuration>
