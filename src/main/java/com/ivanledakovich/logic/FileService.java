@@ -2,21 +2,19 @@ package com.ivanledakovich.logic;
 
 import com.ivanledakovich.database.FileRepository;
 import com.ivanledakovich.models.FileModel;
+import com.ivanledakovich.utils.TextFileNamingSystem;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 @Service
 public class FileService {
     private static final Logger logger = Logger.getLogger(FileService.class);
-
     private final FileRepository fileRepository;
     private final ExecutorService executor;
 
@@ -25,34 +23,49 @@ public class FileService {
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
-    public List<Future<File>> processFiles(List<String> textFilePaths, String imageType, String saveLocation) {
-        List<Future<File>> futures = new ArrayList<>();
+    private Future<File> submitTheFileForAsyncProcessingByAnExecutor(File textFile, String imageType, String saveLocation) {
+        return executor.submit(
+                new FileProcessor().configure(textFile, imageType, saveLocation, fileRepository)
+        );
+    }
 
-        for (String path : textFilePaths) {
-            futures.add(executor.submit(
-                    new FileProcessor().configure(path, imageType, saveLocation)
-            ));
-        }
-        return futures;
+    public Future<File> processFileInWebMode(MultipartFile file, String imageType, String saveLocation)
+            throws IOException {
+
+        File textFile = createTextFileFromMultipart(file);
+        return submitTheFileForAsyncProcessingByAnExecutor(textFile, imageType, saveLocation);
+    }
+
+    public List<Future<File>> processFilesInCLIMode(List<String> filePaths, String imageType, String saveLocation) {
+        return filePaths.stream()
+                .map(path -> submitTheFileForAsyncProcessingByAnExecutor(new File(path), imageType, saveLocation))
+                .toList();
+    }
+
+    private File createTextFileFromMultipart(MultipartFile file) throws IOException {
+        String originalName = file.getOriginalFilename();
+        String uniqueName = TextFileNamingSystem.generateUniqueTextFileName(originalName);
+
+        File textFile = File.createTempFile(
+                FilenameUtils.getBaseName(uniqueName),
+                "." + FilenameUtils.getExtension(uniqueName)
+        );
+        file.transferTo(textFile);
+        return textFile;
     }
 
     public void awaitCompletion(List<Future<File>> futures) {
         for (Future<File> future : futures) {
             try {
-                File result = future.get();
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("File processing failed: " + e.getMessage());
             }
         }
     }
 
     public void shutdown() {
         executor.shutdown();
-    }
-
-    @Transactional
-    public void insertAFile(File txtFile, File imageFile) throws IOException {
-        fileRepository.insertAFile(txtFile, imageFile);
     }
 
     public FileModel getFileByName(String fileName) {

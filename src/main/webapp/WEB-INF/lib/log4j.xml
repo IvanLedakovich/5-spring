@@ -1,35 +1,30 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
-<log4j:configuration debug="false">
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-    <appender name="default.console" class="org.apache.log4j.ConsoleAppender">
-        <param name="target" value="System.out" />
-        <param name="threshold" value="debug" />
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
         </layout>
     </appender>
 
-    <appender name="raw.console" class="org.apache.log4j.ConsoleAppender">
-        <param name="target" value="System.out" />
-        <param name="threshold" value="debug" />
-
-    </appender>
-
-    <appender name="default.file" class="org.apache.log4j.FileAppender">
-        <param name="file" value="./logs/logfile.log" />
-        <param name="append" value="false" />
-        <param name="threshold" value="debug" />
+    <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="logs/application.log"/>
+        <param name="MaxFileSize" value="10MB"/>
+        <param name="MaxBackupIndex" value="10"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
         </layout>
     </appender>
+
+    <logger name="com.ivanledakovich">
+        <level value="debug"/>
+    </logger>
 
     <root>
-        <priority value="info" />
-        <appender-ref ref="default.console" />
-        <appender-ref ref="default.file" />
+        <priority value="info"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
-
 
 </log4j:configuration>

@@ -1,12 +1,7 @@
 package com.ivanledakovich.controllers;
 
-import com.ivanledakovich.logic.FileReader;
 import com.ivanledakovich.logic.FileService;
-import com.ivanledakovich.logic.ImageCreator;
 import com.ivanledakovich.models.FileModel;
-import com.ivanledakovich.utils.ImageFileNamingSystem;
-import com.ivanledakovich.utils.TextFileNamingSystem;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -18,11 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 @Controller
 public class FileController {
@@ -47,30 +43,12 @@ public class FileController {
                                    @RequestParam String imageExtension,
                                    @RequestParam String saveLocation) throws IOException {
 
+        List<Future<File>> futures = new ArrayList<>();
         for (MultipartFile file : files) {
-            String originalFilename = file.getOriginalFilename();
-            String uniqueTextFileName = TextFileNamingSystem.generateUniqueTextFileName(originalFilename);
-            String uniqueImageFileName = ImageFileNamingSystem.generateUniqueImageName(originalFilename, imageExtension);
-
-            File txtFile = File.createTempFile(
-                    FilenameUtils.getBaseName(uniqueTextFileName),
-                    "." + FilenameUtils.getExtension(uniqueTextFileName)
-            );
-
-            file.transferTo(txtFile);
-
-            String data = FileReader.readFile(txtFile.getAbsolutePath());
-            BufferedImage image = ImageCreator.createImage(data);
-
-            File imageDir = new File(saveLocation);
-            if (!imageDir.exists()) {
-                imageDir.mkdirs();
-            }
-            File imageFile = new File(imageDir, uniqueImageFileName);
-            ImageIO.write(image, imageExtension, imageFile);
-
-            fileService.insertAFile(txtFile, imageFile);
+            futures.add(fileService.processFileInWebMode(file, imageExtension, saveLocation));
         }
+
+        fileService.awaitCompletion(futures);
         return "redirect:/files";
     }
 

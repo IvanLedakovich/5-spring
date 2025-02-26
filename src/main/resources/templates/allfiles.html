@@ -29,7 +29,7 @@
                 <tbody>
                 <tr th:each="file : ${files}">
                     <td th:text="${#dates.format(file.creationDate, 'dd MMM yyyy')}"></td>
-                    <td th:text="${file.fileName}"></td>
+                    <td th:text="${#strings.abbreviate(file.fileName, 140)}"></td>
                     <td>
                         <a th:href="@{/download(fileName=${file.fileName})}"
                            class="btn btn-outline-primary btn-sm">
