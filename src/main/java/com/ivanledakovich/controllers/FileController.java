@@ -20,6 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+/**
+ * Controller handling file upload, download and listing operations.
+ * Supports both database and filesystem storage through dependency injection.
+ *
+ * @author Ivan Ledakovich
+ */
 @Controller
 public class FileController {
 

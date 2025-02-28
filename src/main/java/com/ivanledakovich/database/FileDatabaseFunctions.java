@@ -11,6 +11,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Database implementation of file storage using JDBC.
+ * Implements CRUD operations for files in a PostgreSQL database.
+ *
+ * @author Ivan Ledakovich
+ */
 public class FileDatabaseFunctions implements FileRepository {
 
     private final DatabaseConnectionProperties dbProps;

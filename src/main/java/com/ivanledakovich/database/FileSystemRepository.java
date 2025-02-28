@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Filesystem implementation of file storage.
+ * Stores files on disk and maintains metadata in a JSON file.
+ *
+ * @author Ivan Ledakovich
+ */
 public class FileSystemRepository implements FileRepository {
 
     private final Path storagePath;

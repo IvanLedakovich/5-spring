@@ -12,6 +12,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * Service class handling file processing logic and async operations.
+ * Manages thread pooling and coordinates between file processing and storage.
+ *
+ * @author Ivan Ledakovich
+ */
 @Service
 public class FileService {
     private static final Logger logger = Logger.getLogger(FileService.class);
@@ -25,7 +31,7 @@ public class FileService {
 
     private Future<File> submitTheFileForAsyncProcessingByAnExecutor(File textFile, String imageType, String saveLocation) {
         return executor.submit(
-                new FileProcessor().configure(textFile, imageType, saveLocation, fileRepository)
+                new FileProcessor(textFile, imageType, saveLocation, fileRepository)
         );
     }
 

@@ -14,13 +14,12 @@ public class FileProcessor implements Callable<File> {
     private String saveLocation;
     private FileRepository fileRepository;
 
-    public FileProcessor configure(File textFile, String imageType,
+    public FileProcessor(File textFile, String imageType,
                                    String saveLocation, FileRepository fileRepository) {
         this.textFile = textFile;
         this.imageType = imageType;
         this.saveLocation = saveLocation;
         this.fileRepository = fileRepository;
-        return this;
     }
 
     @Override
