@@ -1,7 +1,6 @@
 package com.ivanledakovich.controllers;
 
 import com.ivanledakovich.logic.FileService;
-import com.ivanledakovich.logic.FileServiceImpl;
 import com.ivanledakovich.models.FileModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
@@ -51,7 +50,7 @@ public class FileController {
 
         List<Future<File>> futures = new ArrayList<>();
         for (MultipartFile file : files) {
-            futures.add(fileService.processFileInWebMode(file, imageExtension, saveLocation));
+            futures.add(fileService.processMultipart(file, imageExtension, saveLocation));
         }
 
         fileService.awaitCompletion(futures);

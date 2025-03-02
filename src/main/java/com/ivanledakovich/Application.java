@@ -33,7 +33,7 @@ public class Application implements CommandLineRunner {
 		if (args.length == 0) return;
 
 		Parameters params = ArgumentsParser.parseArguments(args);
-		List<Future<File>> futures = fileService.processFilesInCLIMode(
+		List<Future<File>> futures = fileService.process(
 				params.getTextFilePaths(),
 				params.getImageFileType(),
 				params.getImageSaveLocation()

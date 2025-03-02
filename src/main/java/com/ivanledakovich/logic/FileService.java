@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 public interface FileService {
-    Future<File> processFileInWebMode(MultipartFile file, String imageType, String saveLocation) throws IOException;
-    List<Future<File>> processFilesInCLIMode(List<String> filePaths, String imageType, String saveLocation);
+    Future<File> processMultipart(MultipartFile file, String imageType, String saveLocation) throws IOException;
+    List<Future<File>> process(List<String> filePaths, String imageType, String saveLocation);
     void awaitCompletion(List<Future<File>> futures);
     void shutdown();
     FileModel getFileByName(String fileName);

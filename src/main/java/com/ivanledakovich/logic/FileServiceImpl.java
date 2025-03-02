@@ -23,22 +23,22 @@ public class FileServiceImpl implements FileService {
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
-    private Future<File> submitTheFileForAsyncProcessingByAnExecutor(File textFile, String imageType, String saveLocation) {
+    private Future<File> submit(File textFile, String imageType, String saveLocation) {
         return executor.submit(
                 new FileProcessor(textFile, imageType, saveLocation, fileRepository)
         );
     }
 
     @Override
-    public Future<File> processFileInWebMode(MultipartFile file, String imageType, String saveLocation) throws IOException {
+    public Future<File> processMultipart(MultipartFile file, String imageType, String saveLocation) throws IOException {
         File textFile = createTextFileFromMultipart(file);
-        return submitTheFileForAsyncProcessingByAnExecutor(textFile, imageType, saveLocation);
+        return submit(textFile, imageType, saveLocation);
     }
 
     @Override
-    public List<Future<File>> processFilesInCLIMode(List<String> filePaths, String imageType, String saveLocation) {
+    public List<Future<File>> process(List<String> filePaths, String imageType, String saveLocation) {
         return filePaths.stream()
-                .map(path -> submitTheFileForAsyncProcessingByAnExecutor(new File(path), imageType, saveLocation))
+                .map(path -> submit(new File(path), imageType, saveLocation))
                 .toList();
     }
 
