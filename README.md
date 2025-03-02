@@ -49,4 +49,35 @@ look like this:
 By default, the application works in the filesystem mode when it comes to storing the files. 
 However, the application.properties file can be changed to utilize either a PostgreSQL or 
 MongoDB databases. For that, change the app.storage.type variable and provide your credentials.
+The application.properties file must be present in src/main/resources.
+
+Here is the default application.properties file:
+```
+spring.application.name=5-spring
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/4-database
+spring.datasource.username=postgres
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.sql.init.mode=always
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.generate-ddl=true
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+spring.servlet.multipart.max-file-size=50MB
+spring.servlet.multipart.max-request-size=50MB
+
+app.storage.type=filesystem
+app.storage.path=./storage
+
+app.save-locations.0=./storage/folder1
+app.save-locations.1=./storage/folder2
+
+   ```
 
