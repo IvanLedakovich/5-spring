@@ -23,8 +23,9 @@ public class AppConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "app.storage.type", havingValue = "filesystem")
-    public FileRepository filesystemFileRepository(@Value("${app.storage.path}") String path) {
+    @ConditionalOnProperty(name = "app.storage.type", havingValue = "filesystem", matchIfMissing = true)
+    public FileRepository filesystemFileRepository(
+            @Value("${app.storage.path:./storage}") String path) {
         return new FileSystemRepository(path);
     }
 

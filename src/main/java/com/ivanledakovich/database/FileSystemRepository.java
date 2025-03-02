@@ -1,8 +1,10 @@
 package com.ivanledakovich.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ivanledakovich.logic.ErrorNotifier;
 import com.ivanledakovich.models.FileModel;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.util.Optional;
  * @author Ivan Ledakovich
  */
 public class FileSystemRepository implements FileRepository {
+    private static final Logger logger = Logger.getLogger(FileSystemRepository.class);
 
     private final Path storagePath;
     private final Path metadataFile;
@@ -35,9 +38,13 @@ public class FileSystemRepository implements FileRepository {
 
     private void initializeStorage() {
         try {
-            Files.createDirectories(storagePath);
+            if (!Files.exists(storagePath)) {
+                Files.createDirectories(storagePath);
+                logger.info("Created storage directory: " + storagePath);
+            }
             if (!Files.exists(metadataFile)) {
                 Files.createFile(metadataFile);
+                logger.info("Created metadata file: " + metadataFile);
             }
         } catch (IOException e) {
             throw new RuntimeException("Storage initialization failed", e);

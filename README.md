@@ -46,3 +46,8 @@ look like this:
 ```
    java -jar .\5-spring-0.0.1-SNAPSHOT.jar --args='--file-type png --save-location D:\Games --file-path D:\test.txt D:\test1.txt D:\test2.txt'
    ```
+## Two storage modes:
+By default, the application works in the filesystem mode when it comes to storing the files. 
+However, the application.properties file can be changed to utilize either a PostgreSQL or 
+MongoDB databases. For that, change the app.storage.type variable and provide your credentials.
+
