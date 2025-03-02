@@ -4,7 +4,8 @@ import com.ivanledakovich.database.FileRepository;
 import com.ivanledakovich.models.FileModel;
 import com.ivanledakovich.utils.TextFileNamingSystem;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
@@ -14,7 +15,7 @@ import java.util.concurrent.*;
 
 @Service
 public class FileServiceImpl implements FileService {
-    private static final Logger logger = Logger.getLogger(FileServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
     private final FileRepository fileRepository;
     private final ExecutorService executor;
 

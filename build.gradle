@@ -27,10 +27,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'commons-io:commons-io:2.14.0'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.postgresql:postgresql'
-	implementation 'log4j:log4j:1.2.17'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
@@ -48,8 +48,4 @@ tasks.named('test') {
 
 tasks.withType(JavaCompile) {
 	options.compilerArgs.add('-parameters')
-}
-
-configurations.all {
-	exclude group: 'log4j', module: 'log4j'
 }

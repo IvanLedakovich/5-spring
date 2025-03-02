@@ -5,7 +5,8 @@ import com.ivanledakovich.models.DatabaseConnectionProperties;
 import com.ivanledakovich.models.FileModel;
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Ivan Ledakovich
  */
 public class FileDatabaseFunctions implements FileRepository {
-    private static final Logger logger = Logger.getLogger(FileDatabaseFunctions.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileDatabaseFunctions.class);
 
 
     private final DatabaseConnectionProperties dbProps;

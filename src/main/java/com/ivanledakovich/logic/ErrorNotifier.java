@@ -1,9 +1,10 @@
 package com.ivanledakovich.logic;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ErrorNotifier {
-    private static final Logger logger = Logger.getLogger(ErrorNotifier.class);
+    private static final Logger logger = LoggerFactory.getLogger(ErrorNotifier.class);
 
     public static void invalidInputFilesNotification() {
         logger.error("Please check if the input file(s) are valid, of .txt format and not empty.");

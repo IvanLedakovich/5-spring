@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanledakovich.logic.ErrorNotifier;
 import com.ivanledakovich.models.FileModel;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import java.util.Optional;
  * @author Ivan Ledakovich
  */
 public class FileSystemRepository implements FileRepository {
-    private static final Logger logger = Logger.getLogger(FileSystemRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileSystemRepository.class);
 
     private final Path storagePath;
     private final Path metadataFile;
