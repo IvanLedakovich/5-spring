@@ -23,10 +23,10 @@ public class FileModel {
     @Column(name = "file_data", columnDefinition = "BYTEA")
     private byte[] fileData;
 
-    @Column(name = "image_name", unique = true, nullable = false)
+    @Column(name = "image_name", unique = true, nullable = false, length = 255)
     private String imageName;
 
-    @Column(name = "image_type", nullable = false)
+    @Column(name = "image_type", nullable = false, length = 10)
     private String imageType;
 
     @Lob

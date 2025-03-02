@@ -2,6 +2,7 @@ package com.ivanledakovich.database;
 
 import com.ivanledakovich.models.DatabaseConnectionProperties;
 import com.ivanledakovich.models.FileModel;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -23,6 +24,44 @@ public class FileDatabaseFunctions implements FileRepository {
 
     public FileDatabaseFunctions(DatabaseConnectionProperties dbProps) {
         this.dbProps = dbProps;
+    }
+
+    @PostConstruct
+    public void init() {
+        checkAndCreateTable();
+    }
+
+    private void checkAndCreateTable() {
+        final String CHECK_TABLE_SQL = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM information_schema.tables 
+                WHERE table_name = 'files'
+            )""";
+
+        final String CREATE_TABLE_SQL = """
+            CREATE TABLE files (
+                id BIGSERIAL PRIMARY KEY,
+                creation_date TIMESTAMP NOT NULL,
+                file_name VARCHAR(255) UNIQUE NOT NULL,
+                file_data BYTEA,
+                image_name VARCHAR(255) UNIQUE NOT NULL,
+                image_type VARCHAR(10) NOT NULL,
+                image_data BYTEA
+            )""";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery(CHECK_TABLE_SQL);
+            if (rs.next() && !rs.getBoolean(1)) {
+                try (Statement createStmt = conn.createStatement()) {
+                    createStmt.executeUpdate(CREATE_TABLE_SQL);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Table verification failed", e);
+        }
     }
 
     private Connection connect() throws SQLException {
