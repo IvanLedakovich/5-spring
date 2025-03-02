@@ -11,8 +11,8 @@ works in both CLI and web application modes.**
 There are 2 ways to run the application: inside the IDE and as a .war or .jar standalone.
 
 ### Inside IDE (IntelliJ IDEA):
-1. Provide the application with your own application.properties file in accordance to the 
-example provided or with the environment variables through Run/Debug configuration to 
+1. Adjust the application.properties file to your requirements if needed or provide the application 
+2. with the environment variables through Run/Debug configuration to 
 run in CLI mode.
 2. Run through the IDE functionality or with the 
 ```
@@ -21,8 +21,7 @@ run in CLI mode.
 command in the terminal.
 
 ### As a .war or .jar standalone
-1. Provide the application with your own application.properties file in accordance to the
-example provided
+1. Adjust the application.properties file to your requirements if needed
 2. Package with the 
 ```
    ./gradlew bootJar
