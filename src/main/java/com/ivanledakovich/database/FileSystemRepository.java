@@ -59,6 +59,7 @@ public class FileSystemRepository implements FileRepository {
                     .findFirst()
                     .orElse(null);
         } catch (IOException e) {
+            logger.error("Metadata read failed: " + e.getMessage(), e);
             throw new RuntimeException("Metadata read failed", e);
         }
     }

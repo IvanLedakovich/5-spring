@@ -49,3 +49,7 @@ tasks.named('test') {
 tasks.withType(JavaCompile) {
 	options.compilerArgs.add('-parameters')
 }
+
+configurations.all {
+	exclude group: 'log4j', module: 'log4j'
+}

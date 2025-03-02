@@ -1,9 +1,11 @@
 package com.ivanledakovich.database;
 
+import com.ivanledakovich.logic.ErrorNotifier;
 import com.ivanledakovich.models.DatabaseConnectionProperties;
 import com.ivanledakovich.models.FileModel;
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +21,8 @@ import java.util.List;
  * @author Ivan Ledakovich
  */
 public class FileDatabaseFunctions implements FileRepository {
+    private static final Logger logger = Logger.getLogger(FileDatabaseFunctions.class);
+
 
     private final DatabaseConnectionProperties dbProps;
 
@@ -101,6 +105,7 @@ public class FileDatabaseFunctions implements FileRepository {
             }
             return null;
         } catch (SQLException e) {
+            logger.error("Database query failed: " + e.getMessage(), e);
             throw new RuntimeException("Query failed", e);
         }
     }

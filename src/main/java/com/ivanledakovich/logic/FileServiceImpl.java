@@ -60,7 +60,7 @@ public class FileServiceImpl implements FileService {
             try {
                 future.get();
             } catch (InterruptedException | ExecutionException e) {
-                logger.error("File processing failed: " + e.getMessage());
+                logger.error("File processing failed: " + e.getMessage(), e);
             }
         }
     }
