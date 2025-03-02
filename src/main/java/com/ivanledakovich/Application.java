@@ -13,7 +13,6 @@ import java.util.concurrent.Future;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
-
 	private final FileService fileService;
 
 	public Application(FileService fileService) {

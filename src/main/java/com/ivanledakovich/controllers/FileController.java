@@ -1,6 +1,7 @@
 package com.ivanledakovich.controllers;
 
 import com.ivanledakovich.logic.FileService;
+import com.ivanledakovich.logic.FileServiceImpl;
 import com.ivanledakovich.models.FileModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
@@ -28,7 +29,6 @@ import java.util.concurrent.Future;
  */
 @Controller
 public class FileController {
-
     private final FileService fileService;
     private final Map<Integer, String> saveLocations;
 
