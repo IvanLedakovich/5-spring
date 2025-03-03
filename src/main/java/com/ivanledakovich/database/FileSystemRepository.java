@@ -1,7 +1,6 @@
 package com.ivanledakovich.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ivanledakovich.logic.ErrorNotifier;
 import com.ivanledakovich.models.FileModel;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;

@@ -8,12 +8,12 @@ import java.io.File;
 import java.util.List;
 
 @Service
-@Profile("postgres") // Changed from "database"
-public class DatabaseStorageService implements StorageService {
+@Profile("mongodb")
+public class MongoStorageService implements StorageService {
 
     private final FileRepository fileRepository;
 
-    public DatabaseStorageService(FileRepository fileRepository) {
+    public MongoStorageService(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
 

@@ -1,6 +1,5 @@
 package com.ivanledakovich.database;
 
-import com.ivanledakovich.logic.ErrorNotifier;
 import com.ivanledakovich.models.DatabaseConnectionProperties;
 import com.ivanledakovich.models.FileModel;
 import jakarta.annotation.PostConstruct;
@@ -95,7 +94,7 @@ public class FileDatabaseFunctions implements FileRepository {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 FileModel model = new FileModel();
-                model.setId(rs.getLong("id"));
+                model.setId(rs.getString("id"));
                 model.setCreationDate(rs.getDate("creation_date"));
                 model.setFileName(rs.getString("file_name"));
                 model.setFileData(rs.getBytes("file_data"));
@@ -145,7 +144,7 @@ public class FileDatabaseFunctions implements FileRepository {
 
             while (rs.next()) {
                 FileModel model = new FileModel();
-                model.setId(rs.getLong("id"));
+                model.setId(rs.getString("id"));
                 model.setCreationDate(rs.getDate("creation_date"));
                 model.setFileName(rs.getString("file_name"));
                 model.setFileData(rs.getBytes("file_data"));

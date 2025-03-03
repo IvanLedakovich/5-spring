@@ -40,3 +40,4 @@ out/
 /src/main/resources/application.properties
 /logs/application.log
 /storage/
+/logs/

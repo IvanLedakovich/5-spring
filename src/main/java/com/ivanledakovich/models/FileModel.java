@@ -1,6 +1,7 @@
 package com.ivanledakovich.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
 import java.util.Date;
@@ -9,8 +10,9 @@ import java.util.Date;
 @Table(name = "files")
 public class FileModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @Column(name = "creation_date", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,8 +35,8 @@ public class FileModel {
     @Column(name = "image_data", columnDefinition = "BYTEA")
     private byte[] imageData;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
     public Date getCreationDate() { return creationDate; }
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
     public String getFileName() { return fileName; }
