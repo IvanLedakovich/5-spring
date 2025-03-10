@@ -31,6 +31,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.postgresql:postgresql'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	implementation 'org.hibernate:hibernate-core:6.4.2.Final'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
@@ -48,4 +49,8 @@ tasks.named('test') {
 
 tasks.withType(JavaCompile) {
 	options.compilerArgs.add('-parameters')
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs += '-parameters'
 }

@@ -2,41 +2,47 @@ package com.ivanledakovich.models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "files")
 public class FileModel {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "uuid2")
+    @Column(columnDefinition = "UUID", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(name = "creation_date", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
 
-    @Column(name = "file_name", unique = true, nullable = false)
+    @Column(name = "file_name", nullable = false, length = 255)
     private String fileName;
 
     @Lob
-    @Column(name = "file_data", columnDefinition = "BYTEA")
+    @JdbcTypeCode(SqlTypes.BINARY)
+    @Column(name = "file_data", nullable = false)
     private byte[] fileData;
 
-    @Column(name = "image_name", unique = true, nullable = false, length = 255)
+    @Column(name = "image_name", nullable = false, length = 255)
     private String imageName;
 
     @Column(name = "image_type", nullable = false, length = 10)
     private String imageType;
 
     @Lob
-    @Column(name = "image_data", columnDefinition = "BYTEA")
+    @JdbcTypeCode(SqlTypes.BINARY)
+    @Column(name = "image_data", nullable = false)
     private byte[] imageData;
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
     public Date getCreationDate() { return creationDate; }
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
     public String getFileName() { return fileName; }

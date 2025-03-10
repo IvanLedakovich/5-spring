@@ -1,6 +1,6 @@
 package com.ivanledakovich.config;
 
-import com.ivanledakovich.database.MongoFileRepository;
+import com.ivanledakovich.database.mongodb.MongoFileRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

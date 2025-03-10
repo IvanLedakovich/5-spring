@@ -1,9 +1,8 @@
 package com.ivanledakovich.config;
 
-import com.ivanledakovich.database.FileDatabaseFunctions;
-import com.ivanledakovich.database.FileRepository;
-import com.ivanledakovich.database.FileSystemRepository;
-import com.ivanledakovich.database.MongoFileRepository;
+import com.ivanledakovich.database.*;
+import com.ivanledakovich.database.jpa.FileJpaRepository;
+import com.ivanledakovich.database.mongodb.MongoFileRepository;
 import com.ivanledakovich.models.DatabaseConnectionProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,8 +21,8 @@ public class AppConfig {
 
     @Bean
     @ConditionalOnProperty(name = "app.storage.type", havingValue = "postgres")
-    public FileRepository databaseFileRepository(DatabaseConnectionProperties dbProps) {
-        return new FileDatabaseFunctions(dbProps);
+    public FileRepository databaseFileRepository(FileJpaRepository fileJpaRepository) {
+        return new JpaFileRepositoryImpl(fileJpaRepository);
     }
 
     @Bean

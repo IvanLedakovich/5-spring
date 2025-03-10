@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.io.File;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.concurrent.Future;
 
 @SpringBootApplication
 @EntityScan("com.ivanledakovich.models")
+@EnableJpaRepositories(basePackages = "com.ivanledakovich.database.jpa")
+@EnableMongoRepositories(basePackages = "com.ivanledakovich.database.mongodb")
 public class Application implements CommandLineRunner {
 	private final FileService fileService;
 

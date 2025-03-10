@@ -1,5 +1,6 @@
-package com.ivanledakovich.database;
+package com.ivanledakovich.database.mongodb;
 
+import com.ivanledakovich.database.FileRepository;
 import com.ivanledakovich.exceptions.StorageException;
 import com.ivanledakovich.models.FileModel;
 import com.ivanledakovich.models.MongoFileModel;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -28,6 +30,7 @@ public class MongoFileRepository implements FileRepository {
 
     private MongoFileModel convertToMongoModel(FileModel model) {
         MongoFileModel mongoFile = new MongoFileModel();
+        mongoFile.setId(model.getId().toString());
         mongoFile.setCreationDate(model.getCreationDate());
         mongoFile.setFileName(model.getFileName());
         mongoFile.setFileData(model.getFileData());
@@ -39,7 +42,7 @@ public class MongoFileRepository implements FileRepository {
 
     private FileModel convertFromMongoModel(MongoFileModel mongoFile) {
         FileModel model = new FileModel();
-        model.setId(mongoFile.getId());
+        model.setId(UUID.fromString(mongoFile.getId()));
         model.setCreationDate(mongoFile.getCreationDate());
         model.setFileName(mongoFile.getFileName());
         model.setFileData(mongoFile.getFileData());
@@ -65,6 +68,7 @@ public class MongoFileRepository implements FileRepository {
     public void insertAFile(File txtFile, File imageFile) {
         try {
             FileModel model = new FileModel();
+            model.setId(UUID.randomUUID());
             model.setCreationDate(new Date());
             model.setFileName(txtFile.getName());
             model.setFileData(Files.readAllBytes(txtFile.toPath()));

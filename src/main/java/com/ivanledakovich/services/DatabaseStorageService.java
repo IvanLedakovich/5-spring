@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.List;
 
 @Service
-@Profile("postgres") // Changed from "database"
+@Profile("postgres")
 public class DatabaseStorageService implements StorageService {
 
     private final FileRepository fileRepository;
