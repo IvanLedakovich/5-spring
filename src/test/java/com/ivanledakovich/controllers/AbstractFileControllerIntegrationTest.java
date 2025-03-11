@@ -47,13 +47,15 @@
 //        // Test listing
 //        mockMvc.perform(get("/files"))
 //                .andExpect(status().isOk())
-//                .andExpect(model().attributeExists("files"));
+//                .andExpect(model().attributeExists("files"))
+//                .andExpect(view().name("allfiles"));
 //
 //        // Test download
 //        mockMvc.perform(get("/download")
 //                        .param("fileName", "test.txt"))
 //                .andExpect(status().isOk())
-//                .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"test.txt\""))
+//                .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,
+//                        "attachment; filename=\"test.txt\""))
 //                .andExpect(content().bytes("Test content".getBytes()));
 //    }
 //}

@@ -7,7 +7,6 @@
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.TestPropertySource;
 //
-//import java.io.File;
 //import java.util.List;
 //
 //import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +16,7 @@
 //        "--save-location=target/test-output",
 //        "--file-path=src/test/resources/test.txt"
 //})
-//@TestPropertySource(properties = "app.storage.type=database")
+//@TestPropertySource(properties = "app.storage.type=filesystem")
 //class ApplicationCLIIntegrationTest {
 //
 //    @Autowired
@@ -30,6 +29,8 @@
 //        files.forEach(file -> {
 //            assertNotNull(file.getFileName());
 //            assertNotNull(file.getImageName());
+//            assertTrue(file.getFileName().endsWith(".txt"));
+//            assertTrue(file.getImageName().endsWith(".png"));
 //        });
 //    }
 //}

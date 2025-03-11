@@ -22,4 +22,11 @@
 //                        .param("fileName", "nonexistent.txt"))
 //                .andExpect(status().isNotFound());
 //    }
+//
+//    @Test
+//    void testGenericExceptionHandling() throws Exception {
+//        mockMvc.perform(get("/invalid-endpoint"))
+//                .andExpect(status().is4xxClientError())
+//                .andExpect(view().name("error"));
+//    }
 //}

@@ -23,4 +23,10 @@
 //        assertEquals("/save/path", params.getImageSaveLocation());
 //        assertEquals(Arrays.asList("file1.txt", "file2.txt"), params.getTextFilePaths());
 //    }
+//
+//    @Test
+//    void parseArgumentsWithMissingArgsShowsHelp() {
+//        String[] args = {"--help"};
+//        assertDoesNotThrow(() -> ArgumentsParser.parseArguments(args));
+//    }
 //}
